@@ -242,9 +242,9 @@ public class CharacterBattle : MonoBehaviour
 
     public void RollInitiative(float speed)
     {
-        int dieRoll = UnityEngine.Random.Range(1, GameManager.instance.UniversalVariables.InitiativeRollSize + 1);
-        Initiative =  dieRoll + speed;
-        TransitionToState(_state, BattleState.Idle);
+        //int dieRoll = UnityEngine.Random.Range(1, GameManager.instance.UniversalVariables.InitiativeRollSize + 1);
+        //Initiative =  dieRoll + speed;
+        //TransitionToState(_state, BattleState.Idle);
     }
 
     public void UseActionOn(CharacterBattle target, ActionDescription action, Action onActionComplete)

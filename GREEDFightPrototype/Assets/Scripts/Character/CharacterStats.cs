@@ -59,26 +59,26 @@ public class CharacterStats : MonoBehaviour
 
     public void RecalculateHealth()
     {
-        Health.RemoveAllModifiersFromSource(Vitality);
+        //Health.RemoveAllModifiersFromSource(Vitality);
 
-        float vitalityValue = Vitality.MaxValue * GameManager.instance.UniversalVariables.VitalityToHealthFactor;
+        //float vitalityValue = Vitality.MaxValue * GameManager.instance.UniversalVariables.VitalityToHealthFactor;
 
-        StatModifier healthModifier = new StatModifier(vitalityValue, StatModifierType.Flat, Vitality);
-        Health.AddModifier(healthModifier);
+        //StatModifier healthModifier = new StatModifier(vitalityValue, StatModifierType.Flat, Vitality);
+        //Health.AddModifier(healthModifier);
 
-        float health = Health.MaxValue;
+        //float health = Health.MaxValue;
     }
 
     public void RecalculateMagic()
     {
-        Magic.RemoveAllModifiersFromSource(Arcane);
+        //Magic.RemoveAllModifiersFromSource(Arcane);
 
-        float arcaneValue = Arcane.MaxValue * GameManager.instance.UniversalVariables.ArcaneToMagicFactor;
+        //float arcaneValue = Arcane.MaxValue * GameManager.instance.UniversalVariables.ArcaneToMagicFactor;
 
-        StatModifier magicModifier = new StatModifier(arcaneValue, StatModifierType.Flat, Arcane);
-        Magic.AddModifier(magicModifier);
+        //StatModifier magicModifier = new StatModifier(arcaneValue, StatModifierType.Flat, Arcane);
+        //Magic.AddModifier(magicModifier);
 
-        float magic = Magic.MaxValue;
+        //float magic = Magic.MaxValue;
     }
 
     private void Update()

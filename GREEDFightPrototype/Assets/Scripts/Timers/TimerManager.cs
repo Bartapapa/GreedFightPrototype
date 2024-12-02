@@ -10,9 +10,10 @@ public class TimerManager : MonoBehaviour
     [ReadOnlyInspector] public List<Timer> Timers = new List<Timer>();
 
     [Header("PARAMETERS")]
-    [SerializeField] private float _timeScale = 1f;
+    [SerializeField] private static float _internalTimeScale = 1f;
+    public static float TimeScale { get { return _internalTimeScale; } }
 
-    public bool Paused { get { return _timeScale == 0f; } }
+    public bool Paused { get { return TimeScale == 0f; } }
 
     private void Awake()
     {
@@ -30,7 +31,7 @@ public class TimerManager : MonoBehaviour
     {
         foreach(Timer timer in Timers)
         {
-            timer.Tick(Time.deltaTime * _timeScale);
+            timer.Tick(Time.deltaTime * TimeScale);
         }
     }
 
@@ -41,7 +42,7 @@ public class TimerManager : MonoBehaviour
 
     public void SetTimeScale(float scale)
     {
-        _timeScale = scale;
+        _internalTimeScale = scale;
     }
 
     public void TimerEndCallback(Timer timer)

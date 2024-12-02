@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [Header("Universal variables")]
+    [Header("UNIVERSAL VARIABLES")]
     public UniversalVariables UniversalVariables;
 
     private void Awake()

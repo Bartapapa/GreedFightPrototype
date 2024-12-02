@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections.ObjectModel;
+using static Unity.VisualScripting.Member;
 
 [Serializable]
 public class CharacterStat
@@ -89,6 +90,23 @@ public class CharacterStat
         for (int i = _statModifiers.Count-1; i >= 0; i--)
         {
             if (_statModifiers[i].Source == source)
+            {
+                _isDirty = true;
+                didRemove = true;
+                _statModifiers.RemoveAt(i);
+            }
+        }
+
+        return didRemove;
+    }
+
+    public bool RemoveModifierOfId(string id)
+    {
+        bool didRemove = false;
+
+        for (int i = _statModifiers.Count - 1; i >= 0; i--)
+        {
+            if (_statModifiers[i].ID == id)
             {
                 _isDirty = true;
                 didRemove = true;
