@@ -15,7 +15,6 @@ public class BattleCharacter : MonoBehaviour
     public CharacterStat AutomaticRPMGainFactor;
 
     [Header("RPM")]
-    public float MaxRPM = 3000f;
     [ReadOnlyInspector] public float CurrentRPM = 0f;
     public bool ReadyToAttack { get { return CurrentRPM >= 1000f ? true : false; } }
 

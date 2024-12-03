@@ -11,6 +11,6 @@ public class CharacterRPMSlider : MonoBehaviour
 
     private void Update()
     {
-        CharacterSlider.value = Character.CurrentRPM / Character.MaxRPM;
+        CharacterSlider.value = Character.CurrentRPM / GameManager.instance.UniversalVariables.MaxRPM;
     }
 }

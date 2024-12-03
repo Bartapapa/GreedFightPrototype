@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70500ae1c9e5a2e4fb8586ee959d8d79, type: 3}
   m_Name: UniversalVariables_Test
   m_EditorClassIdentifier: 
-  _vitalityToHealthFactor: 2
-  _arcaneToMagicFactor: 2
-  _initiativeRollSize: 12
+  MaxRPM: 3000
+  BasePowerLevelIncreaseThreshold: 500
+  MaxFuelAmount: 2000
+  MaxGear: 5
+  Gear2FuelThreshold: 1000
+  Gear3FuelThreshold: 2000
+  Gear4FuelThreshold: 3500
+  Gear5FuelThreshold: 5000
+  InitialFuel: 500
+  InitialRefinedFuel: 0
+  InitialGear: 1
+  InitialHope: 1

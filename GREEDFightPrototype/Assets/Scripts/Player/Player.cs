@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     public int CurrentGear = 1;
 
     [Header("FUEL")]
+    public float CurrentFuel = 0f;
+    public float CurrentRefinedFuel = 0f;
+
+    [Header("REVVING")]
     public float RevEngineMaxDuration = 1f;
 
     private float _revEngineValue;
@@ -44,6 +48,13 @@ public class Player : MonoBehaviour
         }
 
         input = GetComponent<PlayerInput>();
+    }
+
+    private void Start()
+    {
+        CurrentFuel = GameManager.instance.UniversalVariables.InitialFuel;
+        CurrentGear = GameManager.instance.UniversalVariables.InitialGear;
+        CurrentRefinedFuel = GameManager.instance.UniversalVariables.InitialRefinedFuel;
     }
 
     private void Update()
@@ -119,6 +130,7 @@ public class Player : MonoBehaviour
 
     private void HandleRevEngineFuelValue()
     {
+        if (CurrentFuel <= 0) return;
         if (CombatManager.instance.IsMercenary(CombatManager.instance.CurrentSelectedCharacter))
         {
             if (!Revving)
@@ -131,13 +143,49 @@ public class Player : MonoBehaviour
                 if (_revEngineDuration > RevEngineMaxDuration) _revEngineDuration = RevEngineMaxDuration;
                 float RPMincrease = (GameManager.instance.UniversalVariables.BasePowerLevelIncreaseThreshold*1.6f) * (Mathf.Pow((1 - (_revEngineDuration / RevEngineMaxDuration)), 2f)) * _revEngineValue * Time.deltaTime * TimerManager.TimeScale;
                 CombatManager.instance.CurrentSelectedCharacter.IncreaseRPM(RPMincrease);
+                CurrentFuel -= RPMincrease * .5f;
+                if (CurrentFuel < 0)
+                {
+                    CurrentFuel = 0f;
+                }
             }
         }
     }
 
     private void HandleRefineFuelValue()
     {
-        //BasePowerLevelIncreaseThreshold * _refineFuelValue * Time.deltaTime;
+        if (CurrentFuel <= 0 || CurrentGear == 5) return;
+        float refinedFuelIncrease = GameManager.instance.UniversalVariables.BasePowerLevelIncreaseThreshold * _refineFuelValue * Time.deltaTime;
+        CurrentRefinedFuel += refinedFuelIncrease;
+        float refinedFuelThreshold = 9999f;
+        if (CurrentGear == 1)
+        {
+            refinedFuelThreshold = GameManager.instance.UniversalVariables.Gear2FuelThreshold;
+        }
+        else if (CurrentGear == 2)
+        {
+            refinedFuelThreshold = GameManager.instance.UniversalVariables.Gear3FuelThreshold;
+        }
+        else if (CurrentGear == 3)
+        {
+            refinedFuelThreshold = GameManager.instance.UniversalVariables.Gear4FuelThreshold;
+        }
+        else if (CurrentGear == 4)
+        {
+            refinedFuelThreshold = GameManager.instance.UniversalVariables.Gear5FuelThreshold;
+        }
+        
+        if(CurrentRefinedFuel >= refinedFuelThreshold)
+        {
+            CurrentGear++;
+            CurrentRefinedFuel = 0;
+        }
+
+        CurrentFuel -= refinedFuelIncrease;
+        if (CurrentFuel < 0)
+        {
+            CurrentFuel = 0f;
+        }
     }
 
     #endregion
