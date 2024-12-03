@@ -61,8 +61,6 @@ public class Player : MonoBehaviour
     {
         HandleRevEngineFuelValue();
         HandleRefineFuelValue();
-
-        HandleConfirmAction();
     }
 
     private void SwitchActionMap(string toActionMap)
@@ -123,6 +121,8 @@ public class Player : MonoBehaviour
                 {
                     SwitchActionMap("ActionSelect");
                     CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(true);
+                    TimerManager.instance.PauseTimers();
+                    GameManager.instance.ShowActionSelect(CombatManager.instance.CurrentSelectedCharacter);
                 }
             }       
         }
@@ -198,15 +198,10 @@ public class Player : MonoBehaviour
             if (_actionSelectedConfirmationTimer < _actionSelectConfirmPressTime)
             {
                 _actionSelectedConfirmationTimer += Time.deltaTime;
-            }
-            else
-            {
-                _actionSelectButtonPressed = false;
-                _actionSelectedConfirmationTimer = 0f;
 
                 if (_primaryActionRequested)
                 {
-                    Debug.Log("PRIMARY ACTION");
+                    
                 }
                 else if (_secondaryActionRequested)
                 {
@@ -229,6 +224,36 @@ public class Player : MonoBehaviour
 
                 }
             }
+            else
+            {
+                _actionSelectButtonPressed = false;
+                _actionSelectedConfirmationTimer = 0f;
+
+                if (_primaryActionRequested)
+                {
+                    Debug.Log("PRIMARY ACTION");
+                }
+                else if (_secondaryActionRequested)
+                {
+                    Debug.Log("SECONDARY ACTION");
+                }
+                else if (_tertiaryActionRequested)
+                {
+                    Debug.Log("TERTIARY ACTION");
+                }
+                else if (_corruptionActionRequested)
+                {
+                    Debug.Log("CORRUPTION ACTION");
+                }
+                else if (_analyzeActionRequested)
+                {
+
+                }
+                else if (_guardActionRequested)
+                {
+                    Debug.Log("GUARD ACTION");
+                }
+            }
         }
     }
 
@@ -236,18 +261,20 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
-            _actionSelectButtonPressed = true;
-            _actionSelectedConfirmationTimer = 0f;
+            GameManager.instance.ActionSelectUI.PrimaryAbility.ConfirmAbilityUse(true);
+            //_actionSelectButtonPressed = true;
+            //_actionSelectedConfirmationTimer = 0f;
 
-            _primaryActionRequested = true;
+            //_primaryActionRequested = true;
         }
 
         if (context.canceled)
         {
-            _actionSelectButtonPressed = false;
-            _actionSelectedConfirmationTimer = 0f;
+            GameManager.instance.ActionSelectUI.PrimaryAbility.ConfirmAbilityUse(false);
+            //_actionSelectButtonPressed = false;
+            //_actionSelectedConfirmationTimer = 0f;
 
-            _primaryActionRequested = false;
+            //_primaryActionRequested = false;
         }
     }
 
@@ -255,7 +282,20 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
+            GameManager.instance.ActionSelectUI.SecondaryAbility.ConfirmAbilityUse(true);
+            //_actionSelectButtonPressed = true;
+            //_actionSelectedConfirmationTimer = 0f;
 
+            //_primaryActionRequested = true;
+        }
+
+        if (context.canceled)
+        {
+            GameManager.instance.ActionSelectUI.SecondaryAbility.ConfirmAbilityUse(false);
+            //_actionSelectButtonPressed = false;
+            //_actionSelectedConfirmationTimer = 0f;
+
+            //_primaryActionRequested = false;
         }
     }
 
@@ -263,7 +303,20 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
+            GameManager.instance.ActionSelectUI.TertiaryAbility.ConfirmAbilityUse(true);
+            //_actionSelectButtonPressed = true;
+            //_actionSelectedConfirmationTimer = 0f;
 
+            //_primaryActionRequested = true;
+        }
+
+        if (context.canceled)
+        {
+            GameManager.instance.ActionSelectUI.TertiaryAbility.ConfirmAbilityUse(false);
+            //_actionSelectButtonPressed = false;
+            //_actionSelectedConfirmationTimer = 0f;
+
+            //_primaryActionRequested = false;
         }
     }
 
@@ -271,7 +324,20 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
+            GameManager.instance.ActionSelectUI.CorruptionAbility.ConfirmAbilityUse(true);
+            //_actionSelectButtonPressed = true;
+            //_actionSelectedConfirmationTimer = 0f;
 
+            //_primaryActionRequested = true;
+        }
+
+        if (context.canceled)
+        {
+            GameManager.instance.ActionSelectUI.CorruptionAbility.ConfirmAbilityUse(false);
+            //_actionSelectButtonPressed = false;
+            //_actionSelectedConfirmationTimer = 0f;
+
+            //_primaryActionRequested = false;
         }
     }
 
@@ -295,7 +361,20 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
+            GameManager.instance.ActionSelectUI.GuardAbility.ConfirmAbilityUse(true);
+            //_actionSelectButtonPressed = true;
+            //_actionSelectedConfirmationTimer = 0f;
 
+            //_primaryActionRequested = true;
+        }
+
+        if (context.canceled)
+        {
+            GameManager.instance.ActionSelectUI.GuardAbility.ConfirmAbilityUse(false);
+            //_actionSelectButtonPressed = false;
+            //_actionSelectedConfirmationTimer = 0f;
+
+            //_primaryActionRequested = false;
         }
     }
 
@@ -305,6 +384,8 @@ public class Player : MonoBehaviour
         {
             SwitchActionMap("BattleOverview");
             CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(false);
+            TimerManager.instance.SetTimeScale(1f);
+            GameManager.instance.CloseActionSelect();
         }
     }
 

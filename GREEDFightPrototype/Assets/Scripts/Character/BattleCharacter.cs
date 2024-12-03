@@ -14,10 +14,22 @@ public class BattleCharacter : MonoBehaviour
     public CharacterStat HorsePower;
     public CharacterStat AutomaticRPMGainFactor;
 
+    [Header("CORRUPTION ABILITY")]
+    public AbilityDescription CorruptionAbility;
+
+    [Header("FRONTLINE ABILITIES")]
+    public AbilityDescription PrimaryAbility_Frontline;
+    public AbilityDescription SecondaryAbility_Frontline;
+    public AbilityDescription TertiaryAbility_Frontline;
+
+    [Header("BACKLINE ABILITIES")]
+    public AbilityDescription PrimaryAbility_Backline;
+    public AbilityDescription SecondaryAbility_Backline;
+    public AbilityDescription TertiaryAbility_Backline;
+
     [Header("RPM")]
     [ReadOnlyInspector] public float CurrentRPM = 0f;
     public bool ReadyToAttack { get { return CurrentRPM >= 1000f ? true : false; } }
-
 
     [Header("POSITION")]
     public BattlePosition StartingBattlePosition = BattlePosition.Frontline;

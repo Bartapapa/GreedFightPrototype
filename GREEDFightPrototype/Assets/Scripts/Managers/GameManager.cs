@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [Header("UNIVERSAL VARIABLES")]
     public UniversalVariables UniversalVariables;
 
+    [Header("OBJECT REFERENCES")]
+    public ActionSelect ActionSelectUI;
+
     private void Awake()
     {
         if (instance == null)
@@ -19,5 +22,21 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void Start()
+    {
+        CloseActionSelect();
+    }
+
+    public void ShowActionSelect(BattleCharacter character)
+    {
+        ActionSelectUI.gameObject.SetActive(true);
+        ActionSelectUI.PopulateAbilities(character);
+    }
+
+    public void CloseActionSelect()
+    {
+        ActionSelectUI.gameObject.SetActive(false);
     }
 }
