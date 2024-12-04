@@ -193,6 +193,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3932d5c52ee097c48a22031a4f867a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VerticalCameraOffset: 1
+  Health:
+    BaseValue: 50
+    _maxValue: -3.4028235e+38
+    _currentValue: -3.4028235e+38
+  Poise:
+    BaseValue: 15
+    _maxValue: -3.4028235e+38
+    _currentValue: -3.4028235e+38
   HorsePower:
     BaseValue: 1
     _maxValue: -3.4028235e+38
@@ -201,6 +210,13 @@ MonoBehaviour:
     BaseValue: 1
     _maxValue: -3.4028235e+38
     _currentValue: -3.4028235e+38
+  CorruptionAbility: {fileID: 0}
+  PrimaryAbility_Frontline: {fileID: 0}
+  SecondaryAbility_Frontline: {fileID: 0}
+  TertiaryAbility_Frontline: {fileID: 0}
+  PrimaryAbility_Backline: {fileID: 0}
+  SecondaryAbility_Backline: {fileID: 0}
+  TertiaryAbility_Backline: {fileID: 0}
   CurrentRPM: 0
   StartingBattlePosition: 1
   CurrentBattlePosition: 0

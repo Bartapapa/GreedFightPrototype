@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         HandleRefineFuelValue();
     }
 
-    private void SwitchActionMap(string toActionMap)
+    public void SwitchActionMap(string toActionMap)
     {
         input.SwitchCurrentActionMap(toActionMap);
     }
@@ -115,15 +115,29 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
-            if (CombatManager.instance.IsMercenary(CombatManager.instance.CurrentSelectedCharacter))
+            switch (CombatManager.instance.CurrentState)
             {
-                if (CombatManager.instance.CurrentSelectedCharacter.ReadyToAttack)
-                {
-                    SwitchActionMap("ActionSelect");
-                    CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(true);
-                    TimerManager.instance.PauseTimers();
-                    GameManager.instance.ShowActionSelect(CombatManager.instance.CurrentSelectedCharacter);
-                }
+                case CombatState.BattleOverview:
+                    if (CombatManager.instance.IsMercenary(CombatManager.instance.CurrentSelectedCharacter))
+                    {
+                        if (CombatManager.instance.CurrentSelectedCharacter.ReadyToAttack)
+                        {
+                            SwitchActionMap("ActionSelect");
+                            CombatManager.instance.CurrentState = CombatState.ActionSelect;
+                            CameraManager.instance.EnableCamera(CameraState.ActionSelect);
+                            //CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(true);
+                            CombatManager.instance.ToggleSelectCircle(false);
+                            TimerManager.instance.PauseTimers();
+                            GameManager.instance.ShowActionSelect(CombatManager.instance.CurrentSelectedCharacter);
+                        }
+                    }
+                    break;
+                case CombatState.ActionSelect:
+                    break;
+                case CombatState.Targeting:
+                    break;
+                default:
+                    break;
             }       
         }
     }
@@ -259,93 +273,159 @@ public class Player : MonoBehaviour
 
     public void OnPrimaryAction(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        switch (CombatManager.instance.CurrentState)
         {
-            GameManager.instance.ActionSelectUI.PrimaryAbility.ConfirmAbilityUse(true);
-            //_actionSelectButtonPressed = true;
-            //_actionSelectedConfirmationTimer = 0f;
+            case CombatState.BattleOverview:
+                break;
+            case CombatState.ActionSelect:
+                if (context.performed)
+                {
+                    GameManager.instance.ActionSelectUI.PrimaryAbility.ConfirmAbilityUse(true);
+                    //_actionSelectButtonPressed = true;
+                    //_actionSelectedConfirmationTimer = 0f;
 
-            //_primaryActionRequested = true;
+                    //_primaryActionRequested = true;
+                }
+
+                break;
+            case CombatState.Targeting:
+                if (context.performed)
+                {
+                    CombatManager.instance.TargetReticleUI.ConfirmTarget(true);
+                }
+                break;
+            default:
+                break;
         }
 
         if (context.canceled)
         {
             GameManager.instance.ActionSelectUI.PrimaryAbility.ConfirmAbilityUse(false);
-            //_actionSelectButtonPressed = false;
-            //_actionSelectedConfirmationTimer = 0f;
-
-            //_primaryActionRequested = false;
+            CombatManager.instance.TargetReticleUI.ConfirmTarget(false);
         }
     }
 
     public void OnSecondaryAction(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        switch (CombatManager.instance.CurrentState)
         {
-            GameManager.instance.ActionSelectUI.SecondaryAbility.ConfirmAbilityUse(true);
-            //_actionSelectButtonPressed = true;
-            //_actionSelectedConfirmationTimer = 0f;
+            case CombatState.BattleOverview:
+                break;
+            case CombatState.ActionSelect:
+                if (context.performed)
+                {
+                    GameManager.instance.ActionSelectUI.SecondaryAbility.ConfirmAbilityUse(true);
+                    //_actionSelectButtonPressed = true;
+                    //_actionSelectedConfirmationTimer = 0f;
 
-            //_primaryActionRequested = true;
+                    //_primaryActionRequested = true;
+                }
+
+                break;
+            case CombatState.Targeting:
+                if (context.performed)
+                {
+                    CombatManager.instance.TargetReticleUI.ConfirmTarget(true);
+                }
+                break;
+            default:
+                break;
         }
 
         if (context.canceled)
         {
             GameManager.instance.ActionSelectUI.SecondaryAbility.ConfirmAbilityUse(false);
-            //_actionSelectButtonPressed = false;
-            //_actionSelectedConfirmationTimer = 0f;
-
-            //_primaryActionRequested = false;
+            CombatManager.instance.TargetReticleUI.ConfirmTarget(false);
         }
+
     }
 
     public void OnTertiaryAction(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        switch (CombatManager.instance.CurrentState)
         {
-            GameManager.instance.ActionSelectUI.TertiaryAbility.ConfirmAbilityUse(true);
-            //_actionSelectButtonPressed = true;
-            //_actionSelectedConfirmationTimer = 0f;
+            case CombatState.BattleOverview:
+                break;
+            case CombatState.ActionSelect:
+                if (context.performed)
+                {
+                    GameManager.instance.ActionSelectUI.TertiaryAbility.ConfirmAbilityUse(true);
+                    //_actionSelectButtonPressed = true;
+                    //_actionSelectedConfirmationTimer = 0f;
 
-            //_primaryActionRequested = true;
+                    //_primaryActionRequested = true;
+                }
+
+                break;
+            case CombatState.Targeting:
+                if (context.performed)
+                {
+                    CombatManager.instance.TargetReticleUI.ConfirmTarget(true);
+                }
+                break;
+            default:
+                break;
         }
 
         if (context.canceled)
         {
             GameManager.instance.ActionSelectUI.TertiaryAbility.ConfirmAbilityUse(false);
-            //_actionSelectButtonPressed = false;
-            //_actionSelectedConfirmationTimer = 0f;
-
-            //_primaryActionRequested = false;
+            CombatManager.instance.TargetReticleUI.ConfirmTarget(false);
         }
+
     }
 
     public void OnCorruptionAction(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        switch (CombatManager.instance.CurrentState)
         {
-            GameManager.instance.ActionSelectUI.CorruptionAbility.ConfirmAbilityUse(true);
-            //_actionSelectButtonPressed = true;
-            //_actionSelectedConfirmationTimer = 0f;
+            case CombatState.BattleOverview:
+                break;
+            case CombatState.ActionSelect:
+                if (context.performed)
+                {
+                    GameManager.instance.ActionSelectUI.CorruptionAbility.ConfirmAbilityUse(true);
+                    //_actionSelectButtonPressed = true;
+                    //_actionSelectedConfirmationTimer = 0f;
 
-            //_primaryActionRequested = true;
+                    //_primaryActionRequested = true;
+                }
+
+                break;
+            case CombatState.Targeting:
+                if (context.performed)
+                {
+                    CombatManager.instance.TargetReticleUI.ConfirmTarget(true);
+                }
+                break;
+            default:
+                break;
         }
 
         if (context.canceled)
         {
             GameManager.instance.ActionSelectUI.CorruptionAbility.ConfirmAbilityUse(false);
-            //_actionSelectButtonPressed = false;
-            //_actionSelectedConfirmationTimer = 0f;
-
-            //_primaryActionRequested = false;
+            CombatManager.instance.TargetReticleUI.ConfirmTarget(false);
         }
+
     }
 
     public void OnSelectTarget(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        switch (CombatManager.instance.CurrentState)
         {
-            float value = context.ReadValue<float>();
+            case CombatState.BattleOverview:
+                break;
+            case CombatState.ActionSelect:
+                break;
+            case CombatState.Targeting:
+                if (context.performed)
+                {
+                    CombatManager.instance.SwitchTargetCharacter(context.ReadValue<float>());
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -380,12 +460,35 @@ public class Player : MonoBehaviour
 
     public void OnReturn(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        switch (CombatManager.instance.CurrentState)
         {
-            SwitchActionMap("BattleOverview");
-            CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(false);
-            TimerManager.instance.SetTimeScale(1f);
-            GameManager.instance.CloseActionSelect();
+            case CombatState.BattleOverview:
+                break;
+            case CombatState.ActionSelect:
+                if (context.performed)
+                {
+                    SwitchActionMap("BattleOverview");
+                    CombatManager.instance.CurrentState = CombatState.BattleOverview;
+                    CameraManager.instance.EnableCamera(CameraState.BattleOverview);
+                    CombatManager.instance.ToggleSelectCircle(true);
+                    TimerManager.instance.SetTimeScale(1f);
+                    GameManager.instance.CloseActionSelect();
+                }
+                break;
+            case CombatState.Targeting:
+                if (context.performed)
+                {
+                    SwitchActionMap("ActionSelect");
+                    CombatManager.instance.CurrentState = CombatState.ActionSelect;
+                    CameraManager.instance.EnableCamera(CameraState.ActionSelect);
+                    CombatManager.instance.CancelTargeting();
+                    CombatManager.instance.ToggleSelectCircle(false);
+                    TimerManager.instance.PauseTimers();
+                    GameManager.instance.ShowActionSelect(CombatManager.instance.CurrentSelectedCharacter);
+                }
+                break;
+            default:
+                break;
         }
     }
 

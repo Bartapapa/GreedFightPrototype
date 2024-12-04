@@ -44,6 +44,7 @@ public class CharacterStat
     protected float _value;
     protected float _lastBaseValue = float.MinValue;
     protected float _damage = 0f;
+    public float DamageValue { get { return _damage; } }
 
     protected readonly List<StatModifier> _statModifiers;
     public readonly ReadOnlyCollection<StatModifier> StatModifiers;

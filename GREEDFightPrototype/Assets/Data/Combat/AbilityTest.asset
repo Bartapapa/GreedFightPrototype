@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: TestAbility_FL
   Icon: {fileID: 21300000, guid: 37de5b9062eae7047a4034c242d9b05b, type: 3}
   AbilityRange: 1
-  TargetType: 2
+  TargetType: 1
   TargetNumber: 1
   BaseMinMaxFleshDamage: {x: 8, y: 12}
   BaseMinMaxStanceDamage: {x: 3, y: 7}

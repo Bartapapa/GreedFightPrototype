@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Ability : MonoBehaviour
 {
+    [Header("REPRESENTED ABILITY")]
+    public AbilityDescription AbilityDesc;
+
     [Header("OBJECT REFERENCES")]
     public Image AbiltiyIcon;
     public TextMeshProUGUI AbilityName;
@@ -29,8 +32,8 @@ public class Ability : MonoBehaviour
             _abilityConfirm += Time.deltaTime;
             if (_abilityConfirm > 1f)
             {
-                _abilityConfirm = 1f;
-                //Confirm ability use
+                _abilityConfirm = 0f;
+                CombatManager.instance.ConfirmAbilityUse(AbilityDesc);
             }
         }
         else
@@ -47,6 +50,7 @@ public class Ability : MonoBehaviour
 
     public void PopulateAbility(AbilityDescription ability)
     {
+        AbilityDesc = ability;
         AbiltiyIcon.sprite = ability.Icon;
         AbilityName.text = ability.Name;
     }

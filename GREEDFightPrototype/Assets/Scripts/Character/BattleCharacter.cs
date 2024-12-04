@@ -10,7 +10,12 @@ public enum BattlePosition
 }
 public class BattleCharacter : MonoBehaviour
 {
+    [Header("CAMERA OFFSET")]
+    public float VerticalCameraOffset = 1f;
+
     [Header("BASE STATS")]
+    public CharacterStat Health;
+    public CharacterStat Poise;
     public CharacterStat HorsePower;
     public CharacterStat AutomaticRPMGainFactor;
 
@@ -50,7 +55,7 @@ public class BattleCharacter : MonoBehaviour
         ForceMoveToPosition(StartingBattlePosition);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         HandleRPM();
     }
@@ -60,7 +65,7 @@ public class BattleCharacter : MonoBehaviour
     {
         if (!ReadyToAttack)
         {
-            CurrentRPM += ((GameManager.instance.UniversalVariables.BasePowerLevelIncreaseThreshold * (1 - (1 / ((HorsePower.CurrentValue / 3f) + 1))) * AutomaticRPMGainFactor.CurrentValue) * Time.deltaTime * TimerManager.TimeScale);
+            CurrentRPM += ((GameManager.instance.UniversalVariables.BasePowerLevelIncreaseThreshold * (1 - (1 / ((HorsePower.CurrentValue / 10f) + 1))) * AutomaticRPMGainFactor.CurrentValue) * Time.deltaTime * TimerManager.TimeScale);
             if (CurrentRPM >= 1000f)
             {
                 CurrentRPM = 1000f;
@@ -184,5 +189,17 @@ public class BattleCharacter : MonoBehaviour
     public virtual void SelectCharacterForActionSelect(bool select)
     {
 
+    }
+
+    public virtual void TargetSelf(bool target)
+    {
+
+    }
+
+    public Vector2Int CalculateMinMaxDamage(Vector2Int baseMinMaxDamage)
+    {
+        int minDamage = Mathf.FloorToInt(baseMinMaxDamage.x + ((baseMinMaxDamage.x * .2f) * CurrentPowerLevel-1));
+        int maxDamage = Mathf.FloorToInt(baseMinMaxDamage.y + ((baseMinMaxDamage.y * .2f) * CurrentPowerLevel-1));
+        return new Vector2Int(minDamage, maxDamage);
     }
 }
