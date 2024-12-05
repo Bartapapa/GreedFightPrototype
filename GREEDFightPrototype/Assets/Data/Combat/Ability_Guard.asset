@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ec496ae53da63541939114394444d5e, type: 3}
+  m_Name: Ability_Guard
+  m_EditorClassIdentifier: 
+  AbilityID: 1
+  Name: Guard
+  Icon: {fileID: 21300000, guid: 2bfa1ed4e1e386242871469f52ec11f0, type: 3}
+  GuardAbility: 1
+  AbilityRange: 0
+  TargetType: 0
+  TargetNumber: 1
+  BaseMinMaxFleshDamage: {x: 8, y: 12}
+  BaseMinMaxStanceDamage: {x: 3, y: 7}
+  DMGType: 1
+  FuelConversionRate: 1
+  Heal: 0
+  Conditions: []
+  Effects: 

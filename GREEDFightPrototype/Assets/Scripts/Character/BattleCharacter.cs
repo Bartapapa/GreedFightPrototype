@@ -16,8 +16,12 @@ public class BattleCharacter : MonoBehaviour
     [Header("BASE STATS")]
     public CharacterStat Health;
     public CharacterStat Poise;
+    public CharacterStat PhysArmor;
+    public CharacterStat FirArmor;
     public CharacterStat HorsePower;
     public CharacterStat AutomaticRPMGainFactor;
+    [ReadOnlyInspector] public bool IsGuarding = false;
+    [ReadOnlyInspector] public bool GuardBroken = false;
 
     [Header("CORRUPTION ABILITY")]
     public AbilityDescription CorruptionAbility;
@@ -53,6 +57,42 @@ public class BattleCharacter : MonoBehaviour
     {
         InitializePositions();
         ForceMoveToPosition(StartingBattlePosition);
+
+        Health.CurrentValueReachedZero -= OnHealthReachedZero;
+        Health.CurrentValueReachedZero += OnHealthReachedZero;
+
+        Poise.CurrentValueReachedZero -= OnPoiseDamageMaxed;
+        Poise.CurrentValueReachedZero += OnPoiseDamageMaxed;
+    }
+
+    private void OnHealthReachedZero()
+    {
+        Debug.LogWarning(this.gameObject.name + " died!");
+        if (CombatManager.instance.IsMercenary(this))
+        {
+            CombatManager.instance.Mercenaries.Remove(this);
+        }
+        else
+        {
+            CombatManager.instance.Enemies.Remove(this);
+        }
+
+        CombatManager.instance.Characters.Remove(this);
+        Destroy(this.gameObject);
+    }
+
+    private void OnPoiseDamageMaxed()
+    {
+        Stun();
+    }
+
+    private void Stun()
+    {
+        Debug.LogWarning(this.gameObject.name + " got stunned!");
+
+        CurrentRPM = 0f;
+        GuardBroken = true;
+        Poise.HealToMaxValue();
     }
 
     protected virtual void Update()
@@ -69,6 +109,7 @@ public class BattleCharacter : MonoBehaviour
             if (CurrentRPM >= 1000f)
             {
                 CurrentRPM = 1000f;
+                GuardBroken = false;
             }
         }
     }
@@ -194,6 +235,11 @@ public class BattleCharacter : MonoBehaviour
     public virtual void TargetSelf(bool target)
     {
 
+    }
+
+    public void Guard(bool up)
+    {
+        IsGuarding = up;
     }
 
     public Vector2Int CalculateMinMaxDamage(Vector2Int baseMinMaxDamage)

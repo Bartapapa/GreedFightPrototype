@@ -10,10 +10,17 @@ public class TargetReticle : MonoBehaviour
     public RectTransform Self;
     public RectTransform CanvasRect;
 
-    [Header("OBJECT REFS")]
+    [Header("DATA")]
     public BattleCharacter Target;
     public BattleCharacter Attacker;
     public AbilityDescription AbilityUsed;
+
+    [Header("COLORS")]
+    public Color DamageHealthColor;
+    public Color DamagePoiseColor;
+    public Color HealHealthColor;
+    public Color HealPoiseColor;
+    public Color NoDamageColor;
 
     [Header("OBJECT REFS")]
     public Image ReticleFill;
@@ -52,14 +59,20 @@ public class TargetReticle : MonoBehaviour
         {
             plusOrMinus = "+";
             minusOrPlus = "-";
+            PotentialFleshDamageText.color = HealHealthColor;
+            PotentialStanceDamageText.color = HealPoiseColor;
         }
         else
         {
             plusOrMinus = "-";
             minusOrPlus = "+";
+            PotentialFleshDamageText.color = DamageHealthColor;
+            PotentialStanceDamageText.color = DamagePoiseColor;
         }
-        Vector2Int minMaxFleshDamage = attacker.CalculateMinMaxDamage(abilityUsed.BaseMinMaxFleshDamage);
-        Vector2Int minMaxStanceDamage = attacker.CalculateMinMaxDamage(abilityUsed.BaseMinMaxStanceDamage);
+        //Vector2Int minMaxFleshDamage = attacker.CalculateMinMaxDamage(abilityUsed.BaseMinMaxFleshDamage);
+        //Vector2Int minMaxStanceDamage = attacker.CalculateMinMaxDamage(abilityUsed.BaseMinMaxStanceDamage);
+        Vector2Int minMaxFleshDamage = Damage.CalculateMinMaxFleshDamage(attacker, abilityUsed, target);
+        Vector2Int minMaxStanceDamage = Damage.CalculateMinMaxStanceDamage(attacker, abilityUsed, target);
         PotentialFleshDamageText.text = plusOrMinus + minMaxFleshDamage.x.ToString() + "-" + minMaxFleshDamage.y.ToString() + " " + abilityUsed.DMGType.ToString();
         PotentialStanceDamageText.text = minusOrPlus + minMaxStanceDamage.x.ToString() + "-" + minMaxStanceDamage.y.ToString();
     }

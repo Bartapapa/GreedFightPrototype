@@ -19,6 +19,7 @@ public class CombatManager : MonoBehaviour
     [Header("OBJECT REFS")]
     public Transform CharacterSelect;
     public TargetReticle TargetReticleUI;
+    public GuardReticle GuardReticleUI;
 
     [Header("STATE")]
     public CombatState StartingState = CombatState.BattleOverview;
@@ -202,15 +203,41 @@ public class CombatManager : MonoBehaviour
 
     private void ShowTargetReticle(BattleCharacter character, AbilityDescription ability)
     {
-        TargetReticleUI.gameObject.SetActive(true);
-        TargetReticleUI.Populate(character, CurrentSelectedCharacter, ability);
+        if (ability.GuardAbility)
+        {
+            GuardReticleUI.gameObject.SetActive(true);
+            GuardReticleUI.Populate(character);
+        }
+        else
+        {
+            TargetReticleUI.gameObject.SetActive(true);
+            TargetReticleUI.Populate(character, CurrentSelectedCharacter, ability);
+        }
     }
 
     public void ConfirmUseAbilityOnTarget(BattleCharacter attacker, AbilityDescription ability, BattleCharacter target)
     {
         CurrentSelectedCharacter.CurrentRPM = 0f;
+        attacker.Guard(false);
+
+        DealDamage(attacker, ability, target);
 
         CloseTargetReticle();
+        Player.instance.SwitchActionMap("BattleOverview");
+        CurrentState = CombatState.BattleOverview;
+        CameraManager.instance.EnableCamera(CameraState.BattleOverview);
+        ToggleSelectCircle(true);
+        MoveSelectCircleTo(CurrentSelectedCharacter.transform);
+        TimerManager.instance.SetTimeScale(1f);
+        GameManager.instance.CloseActionSelect();
+    }
+
+    public void ConfirmGuardOnSelf()
+    {
+        CurrentSelectedCharacter.CurrentRPM = 0f;
+        CurrentSelectedCharacter.Guard(true);
+
+        CloseGuardReticle();
         Player.instance.SwitchActionMap("BattleOverview");
         CurrentState = CombatState.BattleOverview;
         CameraManager.instance.EnableCamera(CameraState.BattleOverview);
@@ -223,6 +250,43 @@ public class CombatManager : MonoBehaviour
     private void CloseTargetReticle()
     {
         TargetReticleUI.gameObject.SetActive(false);
+    }
+
+    private void CloseGuardReticle()
+    {
+        GuardReticleUI.gameObject.SetActive(false);
+    }
+
+    private void DealDamage(BattleCharacter attacker, AbilityDescription ability, BattleCharacter target)
+    {
+        int fleshDamage = Damage.GetDamage(Damage.CalculateMinMaxFleshDamage(attacker, ability, target));
+        int stanceDamage = Damage.GetDamage(Damage.CalculateMinMaxStanceDamage(attacker, ability, target));
+
+        if (ability.Heal)
+        {
+            target.Health.Heal(fleshDamage);
+            target.Poise.Heal(stanceDamage);
+        }
+        else
+        {
+            if (target.GuardBroken)
+            {
+                target.GuardBroken = false;
+            }
+
+            target.Health.Damage(fleshDamage);
+            target.Poise.Damage(stanceDamage);
+
+            if (IsEnemy(target))
+            {
+                float generatedFuel = Damage.CalculateGeneratedFuel(fleshDamage, ability);
+                Player.instance.CurrentFuel += generatedFuel;
+                if (Player.instance.CurrentFuel > GameManager.instance.UniversalVariables.MaxFuelAmount)
+                {
+                    Player.instance.CurrentFuel = GameManager.instance.UniversalVariables.MaxFuelAmount;
+                }
+            }
+        }
     }
 
     private List<BattleCharacter> GetPotentialTargets(AbilityDescription ability)
@@ -258,6 +322,7 @@ public class CombatManager : MonoBehaviour
         CameraManager.instance.EnableCamera(CameraState.ActionSelect);
         ToggleSelectCircle(false);
         CloseTargetReticle();
+        CloseGuardReticle();
     }
     #endregion
 }

@@ -10,6 +10,8 @@ public class UniversalVariables : ScriptableObject
     public float BasePowerLevelIncreaseThreshold = 500f;
     public float MaxFuelAmount = 2000f;
     public int MaxGear = 5;
+    public float BaseFuelGain = 100f;
+    public float BaseMaxFuelGain = 500f;
 
     [Header("GEAR VALUES")]
     public float Gear2FuelThreshold = 1000f;

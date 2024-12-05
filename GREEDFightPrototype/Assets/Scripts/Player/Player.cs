@@ -439,13 +439,29 @@ public class Player : MonoBehaviour
 
     public void OnGuard(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        switch (CombatManager.instance.CurrentState)
         {
-            GameManager.instance.ActionSelectUI.GuardAbility.ConfirmAbilityUse(true);
-            //_actionSelectButtonPressed = true;
-            //_actionSelectedConfirmationTimer = 0f;
+            case CombatState.BattleOverview:
+                break;
+            case CombatState.ActionSelect:
+                if (context.performed)
+                {
+                    GameManager.instance.ActionSelectUI.GuardAbility.ConfirmAbilityUse(true);
+                    //_actionSelectButtonPressed = true;
+                    //_actionSelectedConfirmationTimer = 0f;
 
-            //_primaryActionRequested = true;
+                    //_primaryActionRequested = true;
+                }
+
+                break;
+            case CombatState.Targeting:
+                if (context.performed)
+                {
+                    CombatManager.instance.GuardReticleUI.ConfirmTarget(true);
+                }
+                break;
+            default:
+                break;
         }
 
         if (context.canceled)

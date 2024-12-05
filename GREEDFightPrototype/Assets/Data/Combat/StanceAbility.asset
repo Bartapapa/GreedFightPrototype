@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ec496ae53da63541939114394444d5e, type: 3}
-  m_Name: AbilityTest
+  m_Name: StanceAbility
   m_EditorClassIdentifier: 
   AbilityID: -1
-  Name: TestAbility_FL
+  Name: StanceAbility
   Icon: {fileID: 21300000, guid: 37de5b9062eae7047a4034c242d9b05b, type: 3}
+  GuardAbility: 0
   AbilityRange: 1
-  TargetType: 1
+  TargetType: 2
   TargetNumber: 1
-  BaseMinMaxFleshDamage: {x: 8, y: 12}
-  BaseMinMaxStanceDamage: {x: 3, y: 7}
+  BaseMinMaxFleshDamage: {x: 1, y: 3}
+  BaseMinMaxStanceDamage: {x: 40, y: 50}
   DMGType: 1
   FuelConversionRate: 1
   Heal: 0

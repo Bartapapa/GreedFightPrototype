@@ -63,6 +63,7 @@ public class AbilityDescription : ScriptableObject
     public int AbilityID = -1;
     public string Name = "AbilityName";
     public Sprite Icon;
+    public bool GuardAbility = false;
     public AbilityRange AbilityRange = AbilityRange.Melee;
     public TargetTypeCapability TargetType = TargetTypeCapability.Enemy;
     public TargetNumberCapability TargetNumber = TargetNumberCapability.Single;
