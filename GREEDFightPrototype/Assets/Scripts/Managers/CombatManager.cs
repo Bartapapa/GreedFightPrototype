@@ -149,11 +149,24 @@ public class CombatManager : MonoBehaviour
     public void AIAct(BC_Enemy ai)
     {
         ai.CurrentRPM = 0f;
+        switch (ai.CurrentBattlePosition)
+        {
+            case BattlePosition.Frontline:
+                AIUseAbility(ai, ai.PrimaryAbility_Frontline);
+                break;
+            case BattlePosition.Backline:
+                AIUseAbility(ai, ai.PrimaryAbility_Backline);
+                break;
+        }
     }
 
-    private void AIUseAbility(AbilityDescription ability)
+    private void AIUseAbility(BattleCharacter ai, AbilityDescription ability)
     {
+        List<BattleCharacter> aiPotentialTargets = GetPotentialTargets(ability);
+        if (aiPotentialTargets.Count == 0) return;
 
+        int randomIndex = UnityEngine.Random.Range(0, aiPotentialTargets.Count);
+        DealDamage(ai, ability, aiPotentialTargets[randomIndex]);
     }
 
     private void SetupCameraTargeting(AbilityDescription ability)
@@ -301,13 +314,37 @@ public class CombatManager : MonoBehaviour
             case TargetTypeCapability.Ally:
                 foreach(BattleCharacter ally in Mercenaries)
                 {
-                    potentialTargets.Add(ally);
+                    potentialTargets.Add(ally);                   
+                    if (ability.AbilityRange == AbilityRange.Melee)
+                    {
+                        List<BattleCharacter> meleeTargets = new List<BattleCharacter>();
+                        foreach(BattleCharacter character in potentialTargets)
+                        {
+                            if (character.CurrentBattlePosition == BattlePosition.Frontline)
+                            {
+                                meleeTargets.Add(character);
+                            }
+                        }
+                        potentialTargets = meleeTargets;
+                    }
                 }
                 break;
             case TargetTypeCapability.Enemy:
                 foreach (BattleCharacter enemy in Enemies)
                 {
                     potentialTargets.Add(enemy);
+                    if (ability.AbilityRange == AbilityRange.Melee)
+                    {
+                        List<BattleCharacter> meleeTargets = new List<BattleCharacter>();
+                        foreach (BattleCharacter character in potentialTargets)
+                        {
+                            if (character.CurrentBattlePosition == BattlePosition.Frontline)
+                            {
+                                meleeTargets.Add(character);
+                            }
+                        }
+                        potentialTargets = meleeTargets;
+                    }
                 }
                 break;
         }

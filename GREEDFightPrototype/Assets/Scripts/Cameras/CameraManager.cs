@@ -24,6 +24,10 @@ public class CameraManager : MonoBehaviour
     public TargetingCamera EnemyTargetCamera;
     public TargetingCamera MercenaryTargetCamera;
 
+    [Header("UI")]
+    public InputTutorials tutorials;
+    public GameObject Panels;
+
 
     private void Awake()
     {
@@ -51,6 +55,10 @@ public class CameraManager : MonoBehaviour
         switch (state)
         {
             case CameraState.None:
+                tutorials.ActionSelect(false);
+                tutorials.Targeting(false);
+                tutorials.BattleOverview(false);
+                Panels.SetActive(false);
                 BattleOverviewCamera.enabled = false;
                 EnemyTargetCamera.VirtualCam.enabled = false;
                 MercenaryTargetCamera.VirtualCam.enabled = false;
@@ -58,6 +66,10 @@ public class CameraManager : MonoBehaviour
                 CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(false);
                 break;
             case CameraState.BattleOverview:
+                tutorials.ActionSelect(false);
+                tutorials.Targeting(false);
+                tutorials.BattleOverview(true);
+                Panels.SetActive(true);
                 BattleOverviewCamera.enabled = true;
                 EnemyTargetCamera.VirtualCam.enabled = false;
                 MercenaryTargetCamera.VirtualCam.enabled = false;
@@ -65,6 +77,10 @@ public class CameraManager : MonoBehaviour
                 CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(false);
                 break;
             case CameraState.ActionSelect:
+                tutorials.ActionSelect(true);
+                tutorials.Targeting(false);
+                tutorials.BattleOverview(false);
+                Panels.SetActive(false);
                 BattleOverviewCamera.enabled = false;
                 EnemyTargetCamera.VirtualCam.enabled = false;
                 MercenaryTargetCamera.VirtualCam.enabled = false;
@@ -72,6 +88,10 @@ public class CameraManager : MonoBehaviour
                 CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(true);
                 break;
             case CameraState.SelfTarget:
+                tutorials.ActionSelect(false);
+                tutorials.Targeting(true);
+                tutorials.BattleOverview(false);
+                Panels.SetActive(false);
                 BattleOverviewCamera.enabled = false;
                 EnemyTargetCamera.VirtualCam.enabled = false;
                 MercenaryTargetCamera.VirtualCam.enabled = false;
@@ -79,6 +99,10 @@ public class CameraManager : MonoBehaviour
                 CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(false);
                 break;
             case CameraState.EnemyTarget:
+                tutorials.ActionSelect(false);
+                tutorials.Targeting(true);
+                tutorials.BattleOverview(false);
+                Panels.SetActive(false);
                 BattleOverviewCamera.enabled = false;
                 EnemyTargetCamera.VirtualCam.enabled = true;
                 MercenaryTargetCamera.VirtualCam.enabled = false;
@@ -86,6 +110,10 @@ public class CameraManager : MonoBehaviour
                 CombatManager.instance.CurrentSelectedCharacter.SelectCharacterForActionSelect(false);
                 break;
             case CameraState.MercenaryTarget:
+                tutorials.ActionSelect(false);
+                tutorials.Targeting(true);
+                tutorials.BattleOverview(false);
+                Panels.SetActive(false);
                 BattleOverviewCamera.enabled = false;
                 EnemyTargetCamera.VirtualCam.enabled = false;
                 MercenaryTargetCamera.VirtualCam.enabled = true;
